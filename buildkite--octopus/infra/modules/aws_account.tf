@@ -66,11 +66,10 @@ resource "aws_key_pair" "buildkite_ssh_key" {
 
 # Create an EC2 instance for the Buildkite agent
 resource "aws_instance" "buildkite_instance" {
-  for_each = toset(data.aws_subnets.default.ids)
   ami                    = "ami-0c55b159cbfafe1f0"  # Ubuntu 20.04 LTS AMI
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.buildkite_ssh_key.key_name
-  subnet_id              = each.value
+  subnet_id              = data.aws_subnets.default.ids[0]
   security_groups        = [aws_security_group.buildkite_sg.name]
   associate_public_ip_address = true
 
