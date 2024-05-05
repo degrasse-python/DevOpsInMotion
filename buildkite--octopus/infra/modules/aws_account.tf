@@ -41,6 +41,25 @@ resource "aws_security_group" "buildkite_sg" {
   }
 }
 
+# Generate SSH private key
+resource "tls_private_key" "buildkite_ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+# Create SSH key pair in AWS
+resource "aws_key_pair" "buildkite_ssh_key" {
+  key_name   = "buildkite_ssh_key"
+  public_key = tls_private_key.buildkite_ssh_key.public_key_openssh
+}
+
+# Use the generated private key for the EC2 instance
+resource "aws_instance" "buildkite_instance" {
+  # Other instance configuration...
+  key_name = aws_key_pair.buildkite_ssh_key.key_name
+}
+
+
 # Create an EC2 instance for the Buildkite agent
 resource "aws_instance" "buildkite_instance" {
   ami                    = "ami-0c55b159cbfafe1f0"  # Ubuntu 20.04 LTS AMI
@@ -59,7 +78,7 @@ resource "aws_instance" "buildkite_instance" {
     connection {
     type        = "ssh"
     user        = local.ssh_user
-    private_key = file(local.private_key_path)
+    private_key = tls_private_key.buildkite_ssh_key.private_key_pem
     host        = self.public_ip
   }
   }
