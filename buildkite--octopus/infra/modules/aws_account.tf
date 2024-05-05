@@ -53,18 +53,11 @@ resource "aws_key_pair" "buildkite_ssh_key" {
   public_key = tls_private_key.buildkite_ssh_key.public_key_openssh
 }
 
-# Use the generated private key for the EC2 instance
-resource "aws_instance" "buildkite_instance" {
-  # Other instance configuration...
-  key_name = aws_key_pair.buildkite_ssh_key.key_name
-}
-
-
 # Create an EC2 instance for the Buildkite agent
 resource "aws_instance" "buildkite_instance" {
   ami                    = "ami-0c55b159cbfafe1f0"  # Ubuntu 20.04 LTS AMI
   instance_type          = "t2.micro"
-  key_name               = local.key_name  # Update with your SSH key name
+  key_name               = aws_key_pair.buildkite_ssh_key.key_name
   subnet_id              = data.aws_subnet.subnet_1.id  # Update with your subnet ID
   security_groups        = [aws_security_group.buildkite_sg.name]
   associate_public_ip_address = true
