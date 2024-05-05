@@ -1,7 +1,7 @@
 locals {
   ssh_user = "ubuntu"
   key_name = "devops"
-  private_key_path = "~/githubRepos/.ssh/devops.pem"
+  # private_key_path = "~/githubRepos/.ssh/devops.pem"
 }
 
 provider "aws" {
@@ -31,11 +31,6 @@ data "aws_subnet" "subnet_set" {
   for_each = toset(data.aws_subnets.default.ids)
   id       = each.value
 }
-
-output "subnet_cidr_blocks" {
-  value = [for s in data.aws_subnet.default : s.cidr_block]
-}
-
 
 # Create a security group allowing SSH access from anywhere
 resource "aws_security_group" "buildkite_sg" {
@@ -94,8 +89,8 @@ resource "aws_instance" "buildkite_instance" {
   }
   
   provisioner "local-exec" {
-    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${local.private_key_path} buildkite-agent.yml"
-    
+    # command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${local.private_key_path} buildkite-agent.yml"
+    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} buildkite-agent.yml"
   }
 
 }
