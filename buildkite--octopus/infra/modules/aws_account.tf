@@ -16,9 +16,8 @@ data "aws_vpc" "default" {
 }
 
 
-data "aws_subnet" "subnet_1" {
+data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.default.id
-  cidr_block = "172.31.64.0/20"
 }
 
 # Create a security group allowing SSH access from anywhere
@@ -58,7 +57,7 @@ resource "aws_instance" "buildkite_instance" {
   ami                    = "ami-0c55b159cbfafe1f0"  # Ubuntu 20.04 LTS AMI
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.buildkite_ssh_key.key_name
-  subnet_id              = data.aws_subnet.subnet_1.id  # Update with your subnet ID
+  subnet_id              = data.aws_subnet_ids.default.ids[0]
   security_groups        = [aws_security_group.buildkite_sg.name]
   associate_public_ip_address = true
 
