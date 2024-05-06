@@ -41,8 +41,8 @@ Security
 # Create a security group allowing SSH access from anywhere
 resource "aws_security_group" "buildkite_sg" {
   name        = "buildkite_sg"
-  description = "Security group for Buildkite agent"
-  
+  description = "Allow SSH access from anywhere."
+  vpc_id      = data.aws_vpc.default.id
   ingress {
     from_port   = 22
     to_port     = 22
