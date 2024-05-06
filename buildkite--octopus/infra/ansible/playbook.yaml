@@ -1,8 +1,60 @@
 --- 
-  - name: install buildkite
-    hosts: all
-    remote_user: ubuntu
-    become: yes
+- name: buildkite-agent
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+  gather_facts: true
+  any_errors_fatal: true
+  tags:
+    - buildkite
+    - agent
+  roles:
+    - buildkite
+  tasks:
+    - name: Install Python for Ansible
+      raw: sudo apt-get install -y python3
 
-    roles:
-      - buildkite
+    - name: Install Buildkite Agent
+      raw: |
+              echo "Installing Buildkite agent..."
+              sudo apt-get install -y curl
+              TOKEN="INSERT-YOUR-AGENT-TOKEN-HERE" 
+              curl -sL https://raw.githubusercontent.com/buildkite/agent/main/install.sh | bash -s token=$TOKEN
+              
+    - name: Start Buildkite Agent
+      raw: |          
+              ~/.buildkite-agent/bin/buildkite-agent start
+
+    - name: Generate SSH Key
+      raw: |
+              mkdir -p ~/.ssh && cd ~/.ssh
+              ssh-keygen -t rsa -b 4096 -C "build@myorg.com"
+
+    - name: Docker | Apt Repository
+      block:
+        - name: Repository Key
+          ansible.builtin.get_url:
+            url: https://download.docker.com/linux/debian/gpg
+            dest: /usr/share/keyrings/docker.asc
+            mode: "0644"
+        - name: Repository
+          ansible.builtin.apt_repository:
+            repo: "deb [signed-by=/usr/share/keyrings/docker.asc] https://download.docker.com/linux/debian {{ os_release }} stable"
+            state: present
+            filename: docker
+
+    - name: Docker | Apt Cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Docker | Install
+      ansible.builtin.package:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: latest
+      notify: Docker | Restart
+
+                    

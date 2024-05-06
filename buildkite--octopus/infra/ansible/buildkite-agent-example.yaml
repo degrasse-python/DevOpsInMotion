@@ -1,7 +1,16 @@
 # playbook.yml
 
-- hosts: buildkite-instance
-  become: true
+- name: buildkite-instance
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+  gather_facts: true
+  any_errors_fatal: true
+  tags:
+    - buildkite
+    - agent
+  roles:
+    - buildkite
   tasks:
     - name: Install Python for Ansible
       raw: sudo apt-get install -y python3
