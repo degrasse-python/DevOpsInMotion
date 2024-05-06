@@ -136,7 +136,7 @@ resource "aws_instance" "buildkite_instance" {
   key_name               = aws_key_pair.buildkite_ssh_key.key_name
   subnet_id              = data.aws_subnets.default.ids[0]
   security_groups        = [aws_security_group.buildkite_sg.name]
-  vpc_security_group_ids = ["${aws_security_groups.buildkite_sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.buildkite_sg.id}"]
   associate_public_ip_address = true
 
   tags = {
