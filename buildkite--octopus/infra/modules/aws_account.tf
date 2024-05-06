@@ -123,8 +123,6 @@ resource "aws_iam_policy_attachment" "eks_fargate_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"  # Provides permissions for Fargate pod execution role
 }
 
-
-
 /*
 
 EC2
@@ -163,7 +161,8 @@ resource "aws_instance" "buildkite_instance" {
 
 /*
 
-EKS
+EKS Cluster 
+  Argo CD
 
 */
 
@@ -180,11 +179,11 @@ resource "aws_eks_cluster" "prod" {
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
   # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
   depends_on = [
-    aws_iam_role_policy_attachment.eks_cni_policy_attachment,
-    aws_iam_role_policy_attachment.eks_fargate_policy_attachment,
-    aws_iam_role_policy_attachment.eks_node_policy_attachment,
-    aws_iam_role_policy_attachment.eks_policy_attachment,
-    aws_iam_role_policy_attachment.eks_service_policy_attachment,
+    aws_iam_policy_attachment.eks_cni_policy_attachment,
+    aws_iam_policy_attachment.eks_fargate_policy_attachment,
+    aws_iam_policy_attachment.eks_node_policy_attachment,
+    aws_iam_policy_attachment.eks_policy_attachment,
+    aws_iam_policy_attachment.eks_service_policy_attachment,
   ]
 }
 

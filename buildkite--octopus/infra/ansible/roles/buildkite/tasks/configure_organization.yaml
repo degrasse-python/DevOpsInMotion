@@ -20,12 +20,6 @@
     dest: "/var/lib/buildkite-agent/.aws/{{ organization.name }}/credentials"
     mode: "0644"
 
-- name: "Buildkite | Configure | GCP Credentials | {{ organization.name }}"
-  ansible.builtin.copy:
-    content: "{{ organization.gcp.key | b64decode }}"
-    dest: "/var/lib/buildkite-agent/.gcp/{{ organization.name }}/credentials.json"
-    mode: "0644"
-
 - name: "Buildkite | Configure | Agent | {{ organization.name }}"
   ansible.builtin.template:
     src: templates/agent.cfg.j2
@@ -38,11 +32,6 @@
     dest: "/etc/buildkite-agent/{{ organization.name }}/hooks/environment"
     mode: "0644"
 
-- name: "Buildkite | Configure | Pre-Checkout | {{ organization.name }}"
-  ansible.builtin.template:
-    src: templates/pre-checkout.j2
-    dest: "/etc/buildkite-agent/{{ organization.name }}/hooks/pre-checkout"
-    mode: "0644"
 
 - name: "Buildkite | Configure | Systemd Service | {{ organization.name }}"
   ansible.builtin.template:

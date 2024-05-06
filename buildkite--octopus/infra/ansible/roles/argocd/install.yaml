@@ -1,0 +1,84 @@
+---
+- name: Install Argo CD
+hosts: localhost
+become: yes
+tasks:
+- name: Create argocd namespace
+  shell: kubectl create namespace argocd
+  ignore_errors: yes
+
+- name: Install Argo CD using script
+  shell: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  ignore_errors: yes
+
+- name: Pause for 1 minute to allow Argo CD to initialize
+  pause:
+    minutes: 1
+
+- name:
+  shell: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d ; echo
+  register: argocd_password
+  ignore_errors: yes
+
+- name: Create Service for ALB
+  shell: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        alb.ingress.kubernetes.io/backend-protocol-version: HTTP2 #This tells AWS to send traffic from the ALB using HTTP2. Can use GRPC as well if you want to leverage GRPC specific features
+      labels:
+        app: argogrpc
+      name: argogrpc
+      namespace: argocd
+    spec:
+      ports:
+      - name: "443"
+        port: 443
+        protocol: TCP
+        targetPort: 8080
+      selector:
+        app.kubernetes.io/name: argocd-server
+      sessionAffinity: None
+      type: NodePort
+
+    EOF    
+  ignore_errors: yes
+
+- name: Create Ingress for ALB
+  shell: |
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        annotations:
+          alb.ingress.kubernetes.io/backend-protocol: HTTPS
+          # Use this annotation (which must match a service name) to route traffic to HTTP2 backends.
+          alb.ingress.kubernetes.io/conditions.argogrpc: |
+            [{"field":"http-header","httpHeaderConfig":{"httpHeaderName": "Content-Type", "values":["application/grpc"]}}]
+          alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+        name: argocd
+        namespace: argocd
+      spec:
+        rules:
+        - host: argocd.argoproj.io
+          http:
+            paths:
+            - path: /
+              backend:
+                service:
+                  name: argogrpc
+                  port:
+                    number: 443
+              pathType: Prefix
+            - path: /
+              backend:
+                service:
+                  name: argocd-server
+                  port:
+                    number: 443
+              pathType: Prefix
+        tls:
+        - hosts:
+          - argocd.argoproj.io
+      
+      EOF

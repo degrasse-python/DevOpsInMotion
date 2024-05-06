@@ -1,0 +1,27 @@
+---
+- name: Docker | Apt Repository
+  block:
+    - name: Repository Key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/debian/gpg
+        dest: /usr/share/keyrings/docker.asc
+        mode: "0644"
+    - name: Repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/docker.asc] https://download.docker.com/linux/debian {{ os_release }} stable"
+        state: present
+        filename: docker
+
+- name: Docker | Apt Cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Docker | Install
+  ansible.builtin.package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: latest
+  notify: Docker | Restart

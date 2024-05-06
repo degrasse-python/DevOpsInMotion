@@ -1,0 +1,12 @@
+token="{{ organization.token | b64decode }}"
+
+name="%hostname-{{ organization.name }}-{{ buildkite_environment }}-%spawn"
+spawn={{ organization.spawn }}
+
+tags="queue=docker,region=tuxnet,os=linux,arch=amd64,docker=true,environment={{ buildkite_environment }}"
+
+redacted-vars="*_PASSWORD,*_SECRET,*_TOKEN,*_ACCESS_KEY,*_SECRET_KEY,*_ID,_*CREDENTIALS"
+
+build-path="/var/lib/buildkite-agent/{{ organization.name }}/builds"
+hooks-path="/etc/buildkite-agent/{{ organization.name }}/hooks"
+plugins-path="/etc/buildkite-agent/{{ organization.name }}/plugins"
