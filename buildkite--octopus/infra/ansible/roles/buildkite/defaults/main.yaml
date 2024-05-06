@@ -1,0 +1,8 @@
+---
+buildkite_agent_version: 3.42.0-4984
+buildkite_environment: dev
+buildkite_ssh_key: ssh
+buildkite_organizations:
+  - name: org
+    spawn: 1
+    token: token

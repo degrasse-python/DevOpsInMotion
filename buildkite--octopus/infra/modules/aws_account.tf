@@ -153,8 +153,8 @@ resource "aws_instance" "buildkite_instance" {
   }
   
   provisioner "local-exec" {
-    # command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${local.private_key_path} buildkite-agent.yml"
-    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} buildkite-agent.yml"
+    # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
+    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ../ansible/roles/buildkite/tasks/install.yaml"
   }
 
 }
