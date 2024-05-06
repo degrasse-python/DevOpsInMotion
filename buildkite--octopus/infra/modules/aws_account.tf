@@ -164,7 +164,7 @@ resource "aws_instance" "buildkite_instance" {
 EKS Cluster 
   Argo CD
 
-*/
+
 
 
 resource "aws_eks_cluster" "prod" {
@@ -190,3 +190,4 @@ resource "aws_eks_cluster" "prod" {
 output "endpoint" {
   value = aws_eks_cluster.prod.endpoint
 }
+*/
