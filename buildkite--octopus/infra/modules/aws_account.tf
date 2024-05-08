@@ -157,9 +157,9 @@ resource "aws_instance" "buildkite_instance" {
     # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
     command = "pwd"
     }
-  provisioner "local-exec" {
+  provisioner "local-exec-2" {
     # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
-    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ../ansible/playbook.yaml"
+    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} buildkite--octopus/infra/ansible/playbook.yaml"
   }
 
 }
