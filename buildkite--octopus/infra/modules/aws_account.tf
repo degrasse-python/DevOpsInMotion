@@ -27,7 +27,7 @@ data "aws_subnets" "default" {
   }
 }
 
-data "aws_subnet" "subnet_set" {
+data "aws_subnet" "default_subnet_set" {
   for_each = toset(data.aws_subnets.default.ids)
   id       = each.value
 }
@@ -141,6 +141,7 @@ resource "aws_instance" "buildkite_instance" {
   tags = {
     Name = "buildkite-agent"
   }
+  
   provisioner "remote-exec" {
     inline = ["echo 'Wait until SSH is available'"]
 
@@ -195,5 +196,10 @@ output "endpoint" {
 
 output "buildkite_security_group_id" {
   value       = aws_security_group.buildkite_sg.id
+  description = "id of security group"
+}
+
+output "default_vpc_id" {
+  value       = data.aws_vpc.default.id
   description = "id of security group"
 }
