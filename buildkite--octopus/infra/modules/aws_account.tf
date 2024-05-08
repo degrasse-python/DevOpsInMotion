@@ -135,8 +135,7 @@ resource "aws_instance" "buildkite_instance" {
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.buildkite_ssh_key.key_name
   subnet_id              = data.aws_subnets.default.ids[0]
-  security_groups        = [aws_security_group.buildkite_sg.name]
-  vpc_security_group_ids = ["${aws_security_group.buildkite_sg.id}"]
+  vpc_security_group_ids = [aws_security_group.buildkite_sg.id]
   associate_public_ip_address = true
 
   tags = {
@@ -192,3 +191,9 @@ output "endpoint" {
   value = aws_eks_cluster.prod.endpoint
 }
 */
+
+
+output "buildkite_security_group_id" {
+  value       = aws_security_group.buildkite_sg.id
+  description = "id of security group"
+}
