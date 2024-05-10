@@ -3,13 +3,15 @@
   hosts: all
   remote_user: ubuntu
   become: yes
+  become_user: root
+  become_method: sudo
   gather_facts: true
   any_errors_fatal: true
   tags:
     - buildkite
     - agent
   roles:
-    - buildkite
+    - ubuntu
   tasks:
     - name: Install Python for Ansible
       raw: sudo apt-get install -y python3
