@@ -143,7 +143,10 @@ resource "aws_instance" "buildkite_instance" {
   }
   
   provisioner "remote-exec" {
-    inline = ["echo 'Wait until SSH is available'"]
+    inline = ["echo 'Wait until SSH is available'",
+              "git clone https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus tmp/buildkite--octopus",
+              "mv tmp/buildkite--octopus ~/buildkite--octopus",
+              "ls"]
 
     connection {
     type        = "ssh"
@@ -151,13 +154,23 @@ resource "aws_instance" "buildkite_instance" {
     private_key = tls_private_key.buildkite_ssh_key.private_key_pem
     host        = self.public_ip
   }
+  
   }
+  provisioner "local-exec" {
+    # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
+    working_dir = path.cwd
+    # working dir is buildkite--octopus/infra/
+    command = ["git clone https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus tmp/buildkite--octopus",
+              "mv tmp/buildkite--octopus ~/buildkite--octopus",
+              "ls"]
+  }
+
 
   provisioner "local-exec" {
     # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
     working_dir = path.cwd
     # working dir is buildkite--octopus/infra/
-    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip}, --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ansible/playbook.yaml"
+    command = "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip} --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ansible/playbook.yaml"
   }
 
 }
