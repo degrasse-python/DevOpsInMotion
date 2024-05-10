@@ -147,7 +147,8 @@ resource "aws_instance" "buildkite_instance" {
     #    svn export https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus
     #    wget -r -P buildkite--octopus https://github.com/degrasse-python/DevOpsInMotion/tree/4521205cc25012bfb1f7fc3c93dc7dc4ed67fcd0/buildkite--octopus
     inline = ["echo 'Wait until SSH is available'",
-              "svn export https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus"]
+              "ls",
+              "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip} --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ansible/playbook.yaml"]
 
     connection {
     type        = "ssh"
