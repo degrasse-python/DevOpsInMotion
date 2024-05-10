@@ -1,6 +1,6 @@
 locals {
-  ssh_user = "ubuntu"
-  key_name = "devops"
+  ssh_user = "root"
+  key_name = "buildkite_ssh_key"
   # private_key_path = "~/githubRepos/.ssh/devops.pem"
 }
 
