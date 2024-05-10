@@ -143,10 +143,11 @@ resource "aws_instance" "buildkite_instance" {
   }
   
   provisioner "remote-exec" {
+    # https://github.com/degrasse-python/DevOpsInMotion/tree/4521205cc25012bfb1f7fc3c93dc7dc4ed67fcd0/buildkite--octopus
+    #    svn export https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus
+    #    wget -r -P buildkite--octopus https://github.com/degrasse-python/DevOpsInMotion/tree/4521205cc25012bfb1f7fc3c93dc7dc4ed67fcd0/buildkite--octopus
     inline = ["echo 'Wait until SSH is available'",
-              "git clone https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus tmp/buildkite--octopus",
-              "mv tmp/buildkite--octopus ~/buildkite--octopus",
-              "ls"]
+              "svn export https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus"]
 
     connection {
     type        = "ssh"
