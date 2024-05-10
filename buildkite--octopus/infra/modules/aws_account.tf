@@ -156,16 +156,7 @@ resource "aws_instance" "buildkite_instance" {
   }
   
   }
-  provisioner "local-exec" {
-    # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
-    working_dir = path.cwd
-    # working dir is buildkite--octopus/infra/
-    command = ["git clone https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus tmp/buildkite--octopus",
-              "mv tmp/buildkite--octopus ~/buildkite--octopus",
-              "ls"]
-  }
-
-
+ 
   provisioner "local-exec" {
     # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
     working_dir = path.cwd
