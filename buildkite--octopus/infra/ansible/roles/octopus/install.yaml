@@ -1,0 +1,148 @@
+---
+- name: Install Octopus
+hosts: localhost
+become: yes
+tasks:
+- name: Create octopus namespace
+  shell: kubectl create namespace octopus
+  ignore_errors: yes
+
+
+- name: Create values.yaml for Octopus
+  shell: |  
+    openssl rand -base64 16 > /octopus-master-key
+
+- name: Create values.yaml for Octopus
+  shell: |
+    octopus:
+      ingress:
+        enabled: true
+        annotations: 
+          kubernetes.io/ingress.class: nginx
+        path: /
+        hosts:
+          - octopus.example.com
+      acceptEula: "Y" # It is required to accept the Octopus EULA https://octopus.com/legal/customer-agreement
+      masterKey: <generated master key - base64> 
+      databaseConnectionString: <your sql server database connection string> # Server=tcp:octopus-deploy.database.windows.net,1433;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=octopus-deploy;Password={your_password};Encrypt=True;Connection Timeout=30;
+      licenseKeyBase64: <your base64 encoded license key>   
+      username: <admin username>
+      password: <admin password> 
+      packageRepositoryVolume:
+        size: 20Gi 
+        storageClassName: "aws-file"
+        storageAccessMode: ReadWriteOnce
+      artifactVolume:
+        size: 1Gi 
+        storageClassName: "aws-file"
+        storageAccessMode: ReadWriteOnce
+      taskLogVolume: 
+        size: 1Gi 
+        storageClassName: "aws-file"
+        storageAccessMode: ReadWriteOnce
+      serviceAccount:
+    create: false
+    ## The name of the ServiceAccount to use.
+    ## If not set and create is true, a name is generated using the fullname template
+    name:
+    ## Service Account annotations
+    annotations: {}
+    automountServiceAccountToken: false
+    rbac:
+      create: false
+      role:
+        ## Rules to create. It follows the role specification
+        rules:
+          - apiGroups:
+              - ''
+            resources:
+              - services
+              - endpoints
+              - pods
+            verbs:
+              - get
+              - watch
+              - list
+
+    EOF    
+  ignore_errors: yes
+
+- name: Pause for 1 minute to allow Octopus to initialize
+  pause:
+    minutes: 1
+
+- name: Install Argo CD using script
+  shell: kubectl apply -n octopus -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  ignore_errors: yes
+
+- name: Pause for 1 minute to allow Argo CD to initialize
+  pause:
+    minutes: 1
+
+- name:
+  shell: kubectl -n octopus get secret octopus-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d ; echo
+  register: octopus_password
+  ignore_errors: yes
+
+- name: Create Service for ALB
+  shell: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        alb.ingress.kubernetes.io/backend-protocol-version: HTTP2 #This tells AWS to send traffic from the ALB using HTTP2. Can use GRPC as well if you want to leverage GRPC specific features
+      labels:
+        app: octogrpc
+      name: octogrpc
+      namespace: octopus
+    spec:
+      ports:
+      - name: "443"
+        port: 443
+        protocol: TCP
+        targetPort: 8080
+      selector:
+        app.kubernetes.io/name: octopus-server
+      sessionAffinity: None
+      type: NodePort
+
+    EOF    
+  ignore_errors: yes
+
+- name: Create Ingress for ALB
+  shell: |
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        annotations:
+          alb.ingress.kubernetes.io/backend-protocol: HTTPS
+          # Use this annotation (which must match a service name) to route traffic to HTTP2 backends.
+          alb.ingress.kubernetes.io/conditions.argogrpc: |
+            [{"field":"http-header","httpHeaderConfig":{"httpHeaderName": "Content-Type", "values":["application/grpc"]}}]
+          alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+        name: octopus
+        namespace: octopus
+      spec:
+        rules:
+        - host: octopus.argoproj.io
+          http:
+            paths:
+            - path: /
+              backend:
+                service:
+                  name: argogrpc
+                  port:
+                    number: 443
+              pathType: Prefix
+            - path: /
+              backend:
+                service:
+                  name: octopus-server
+                  port:
+                    number: 443
+              pathType: Prefix
+        tls:
+        - hosts:
+          - octopus.argoproj.io
+      
+      EOF

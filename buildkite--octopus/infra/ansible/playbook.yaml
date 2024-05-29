@@ -7,6 +7,8 @@
   become_method: sudo
   gather_facts: true
   any_errors_fatal: true
+  vars_files:
+    - ./tf_ansible_vars_file.yml
   tags:
     - buildkite
     - agent

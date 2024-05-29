@@ -1,0 +1,47 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: artifacts-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  # storageClassName: azurefile
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: repository-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  # storageClassName: azurefile
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: task-logs-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  # storageClassName: azurefile
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: event-exports-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  # storageClassName: azurefile
+  resources:
+    requests:
+      storage: 1Gi
