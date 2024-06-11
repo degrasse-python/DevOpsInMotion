@@ -228,8 +228,6 @@ resource "aws_eks_cluster" "prod" {
 output "endpoint" {
   value = aws_eks_cluster.prod.endpoint
 }
-*/
-
 
 # Export Terraform variable values to an Ansible var_file
 resource "local_file" "tf_ansible_vars_file_new" {
@@ -244,6 +242,10 @@ resource "local_file" "tf_ansible_vars_file_new" {
     DOC
   filename = "../ansible/tf_ansible_vars_file.yml"
 }
+*/
+
+
+
 
 output "buildkite_security_group_id" {
   value       = aws_security_group.buildkite_sg.id
