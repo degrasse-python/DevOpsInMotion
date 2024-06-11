@@ -1,10 +1,8 @@
 --- 
 - name: buildkite-agent
   hosts: all
-  remote_user: ubuntu
+  user: ubuntu
   become: yes
-  become_user: root
-  become_method: sudo
   gather_facts: true
   any_errors_fatal: true
   vars_files:
