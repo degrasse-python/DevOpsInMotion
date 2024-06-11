@@ -1,21 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-nginx
+  name: inmotion.us
   namespace: ingress-nginx
   annotations:
     # add an annotation indicating the issuer to use.
-    cert-manager.io/cluster-issuer: letsencrypt-issuer
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer
     meta.helm.sh/release-namespace: ingress-nginx
     app.kubernetes.io/managed-by: Helm
 spec:
-  ingressClassName: ingress-nginx
+  ingressClassName: inMotionIngress
   tls:
   - hosts:
-    - octopus.prod
-    secretName: octopus-tls-secret
+    - inmotion.us
+    secretName: inmotion.us
   rules:
-    - host: octopus.prod
+    - host: inmotion.us
       http:
         paths:
           - path: /

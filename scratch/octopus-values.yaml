@@ -2,14 +2,20 @@ octopus:
   ingress:
     enabled: true
     spec:
-      ingressClassName: ingress-nginx
+      ingressClassName: inMotionIngress
+    tls:
+    - hosts:
+      - octopus.inmotion.us
+      secretName: octopus.inmotion.us
     path: /
     hosts:
-      - octopus.prod
+      - octopus.inmotion.us
   acceptEula: "Y" # It is required to accept the Octopus EULA https://octopus.com/legal/customer-agreement
-  masterKey: $(cat octopus-master-key) # <generated master key - base64> 
+  # <generated master key - base64> 
+  # echo $(cat octopus-master-key)
+  masterKey: PoFvd+w7ZRCrkLkY896F1LyXJLtDxKiY7takhxlr5IAtulj4VoXwLfbBAwt9AhA=
   # Server=tcp:127.0.0.1,5432;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=octopus-deploy;Password=h0Sf2rNAjk;Encrypt=True;Connection Timeout=30;
-  databaseConnectionString: "Server=tcp:127.0.0.1,5432;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=octopus-deploy;Password=h0Sf2rNAjk;Encrypt=True;Connection Timeout=30;" # Server=tcp:octopus-deploy.database.windows.net,1433;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=octopus-deploy;Password={your_password};Encrypt=True;Connection Timeout=30;
+  databaseConnectionString: "Server=tcp:127.0.0.1,5432;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=postgres;Password=waftaqt1Jw;Encrypt=True;Connection Timeout=30;" # Server=tcp:octopus-deploy.database.windows.net,1433;Initial Catalog=OctopusDeploy;Persist Security Info=False;User ID=octopus-deploy;Password={your_password};Encrypt=True;Connection Timeout=30;
   # add license key
   # licenseKeyBase64: <your base64 encoded license key>   
   username: admin
@@ -23,26 +29,3 @@ octopus:
   taskLogVolume: 
     size: 1Gi 
     storageAccessMode: ReadWriteOnce
-  serviceAccount:
-    create: false # change in production
-    ## The name of the ServiceAccount to use.
-    ## If not set and create is true, a name is generated using the fullname template
-    name: name
-    ## Service Account annotations
-    annotations: {}
-    automountServiceAccountToken: false
-    rbac:
-      create: false
-      role:
-        ## Rules to create. It follows the role specification
-        rules:
-          - apiGroups:
-              - ''
-            resources:
-              - services
-              - endpoints
-              - pods
-            verbs:
-              - get
-              - watch
-              - list

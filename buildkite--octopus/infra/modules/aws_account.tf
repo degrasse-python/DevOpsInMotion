@@ -162,17 +162,14 @@ resource "aws_instance" "buildkite_instance" {
     #    git archive --remote=https://github.com/degrasse-python/DevOpsInMotion.git --format=zip main 'buildkite--octopus' -o buildkite--octopus.zip
     #https://github.com/degrasse-python/DevOpsInMotion/tree/main/buildkite--octopus
     #    wget -r -P buildkite--octopus https://github.com/degrasse-python/DevOpsInMotion/tree/4521205cc25012bfb1f7fc3c93dc7dc4ed67fcd0/buildkite--octopus
-    inline = ["echo 'Wait until SSH is available'",
-              "ls",
-              "ansible-playbook -i ${aws_instance.buildkite_instance.public_ip} --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ansible/playbook.yaml"]
+    inline = ["echo 'Wait until SSH is available'"]
 
     connection {
     type        = "ssh"
     user        = local.ssh_user
     private_key = tls_private_key.buildkite_ssh_key.private_key_pem
     host        = self.public_ip
-  }
-  
+    }
   }
  
   provisioner "local-exec" {

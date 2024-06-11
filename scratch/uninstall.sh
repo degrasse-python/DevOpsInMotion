@@ -5,4 +5,4 @@ kubectl delete all --all
 
 minikube delete --all
 
-# minikube stop
+minikube stop
