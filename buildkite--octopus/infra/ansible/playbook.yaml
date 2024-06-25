@@ -1,11 +1,11 @@
 --- 
 - name: buildkite-agent
   hosts: all
-  user: ubuntu
-  become_user: ubuntu
-  become: yes
-  gather_facts: true
-  any_errors_fatal: true
+  #user: ubuntu
+  #become_user: ubuntu
+  #become: yes
+  #gather_facts: true
+  #any_errors_fatal: true
   tasks:
     - name: Install Python for Ansible
       raw: apt-get install -y python3
