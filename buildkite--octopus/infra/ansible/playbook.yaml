@@ -3,7 +3,7 @@
   hosts: all
   user: ubuntu
   become_user: ubuntu
-  become: true
+  become: yes
   become_method: sudo
   gather_facts: true
   any_errors_fatal: true
@@ -15,7 +15,7 @@
       raw: |
               echo "Installing Buildkite agent..."
               sudo apt-get install -y curl
-              TOKEN="INSERT-YOUR-AGENT-TOKEN-HERE" 
+              TOKEN="BUIKDITE_AGENT_TOKEN" 
               curl -sL https://raw.githubusercontent.com/buildkite/agent/main/install.sh | bash -s token=$TOKEN
               
     - name: Start Buildkite Agent

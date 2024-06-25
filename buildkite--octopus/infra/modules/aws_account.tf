@@ -189,7 +189,7 @@ resource "aws_db_instance" "octopus_db" {
   identifier           = "octopus-db"
   allocated_storage    = 40
   storage_type         = "gp2"
-  engine               = "postgres"
+  engine               = "mssql"  # change to mssql for SQL Server 
   engine_version       = "11.4"
   instance_class       = "db.t2.micro"
   username             = "user"
