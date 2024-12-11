@@ -64,11 +64,9 @@ const app = {
         
         const credentials = localStorage.getItem('credentials');
         
-        // Load environment variables from .env file
-        // Since we're using a bundler like Webpack, we can import dotenv directly
-        const dotenv = await import('./dotenv');
-        dotenv.config();
-        const env = process.env;
+        // Get environment variables from backend
+        const envResponse = await fetch('/api/env');
+        const env = await envResponse.json();
         
         // Send job to Buildkite with additional options
         const response = await axios.post('/api/trigger-build', {
