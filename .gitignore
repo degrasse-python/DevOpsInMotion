@@ -4,3 +4,4 @@
 /scratch
 scratch/uninstall.sh
 private/
+buildkite--platform/.env
