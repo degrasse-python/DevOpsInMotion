@@ -15,6 +15,11 @@ const authMiddleware = basicAuth({
   }
 });
 
+// Define /api/auth/basic endpoint
+app.get('/api/auth/basic', authMiddleware, (req, res) => {
+  res.status(200).json({ message: 'Authentication successful' });
+});
+
 // Protected API endpoints
 app.post('/api/trigger-build', authMiddleware, async (req, res) => {
   try {

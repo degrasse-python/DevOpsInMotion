@@ -1,12 +1,16 @@
 const app = {
   data() {
     return {
+      isLoggedIn: false,
       githubRepo: '',
       buildStatus: '',
       loading: false,
       selectedNginx: '',
       installCertManager: false,
       clusterDetails: null,
+      username: 'admin', // Set default username
+      password: 'password', // Set default password
+      showPassword: false,
       nginxOptions: [
         {
           name: 'Community Nginx Ingress',
@@ -22,16 +26,48 @@ const app = {
     }
   },
   methods: {
+    async login() {
+      try {
+        // Base64 encode credentials
+        const credentials = btoa(`${this.username}:${this.password}`);
+
+        // Check basic auth credentials
+        const response = await fetch('/api/auth/basic', {
+          headers: {
+            'Authorization': `Basic ${credentials}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Authentication failed');
+        }
+
+        // Authentication succeeded
+        this.isLoggedIn = true;
+        localStorage.setItem('credentials', credentials);
+
+      } catch (err) {
+        alert('Login failed');
+        console.error(err);
+      }
+    },
+
     async submitJob() {
       try {
         this.loading = true;
         this.buildStatus = 'Submitting job...';
+        
+        const credentials = localStorage.getItem('credentials');
         
         // Send job to Buildkite with additional options
         const response = await axios.post('/api/trigger-build', {
           repo: this.githubRepo,
           nginxType: this.selectedNginx,
           certManager: this.installCertManager
+        }, {
+          headers: {
+            'Authorization': `Basic ${credentials}`
+          }
         });
 
         this.buildStatus = `Build triggered! Build ID: ${response.data.buildId}`;
@@ -41,15 +77,79 @@ const app = {
           this.clusterDetails = response.data.clusterDetails;
         }
 
+        // Poll for build status updates
+        this.pollBuildStatus(response.data.buildId);
+
       } catch (error) {
         this.buildStatus = `Error: ${error.message}`;
       } finally {
         this.loading = false;
       }
+    },
+
+    async pollBuildStatus(buildId) {
+      const credentials = localStorage.getItem('credentials');
+      
+      const pollInterval = setInterval(async () => {
+        try {
+          const response = await axios.get(`/api/build-status/${buildId}`, {
+            headers: {
+              'Authorization': `Basic ${credentials}`
+            }
+          });
+          
+          this.buildStatus = response.data.status;
+          if (response.data.clusterDetails) {
+            this.clusterDetails = response.data.clusterDetails;
+          }
+          
+          // Stop polling if build is complete
+          if (['passed', 'failed', 'canceled'].includes(response.data.status)) {
+            clearInterval(pollInterval);
+          }
+        } catch (error) {
+          console.error('Error polling build status:', error);
+        }
+      }, 5000); // Poll every 5 seconds
+    },
+
+    togglePassword() {
+      this.showPassword = !this.showPassword;
     }
   },
   template: `
-    <div class="container">
+    <div v-if="!isLoggedIn" class="login-container" style="text-align: center;">
+      <h1 style="margin-bottom: 2rem; color: white;">DevOps In Motion</h1>
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <input 
+          v-model="username"
+          type="text"
+          placeholder="Username"
+          class="form-input"
+          style="width: 200px;"
+        />
+      </div>
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <div style="position: relative; width: 200px; margin: 0 auto;">
+          <input
+            v-model="password" 
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="Password"
+            class="form-input"
+            style="width: 100%; padding-right: 30px;"
+          />
+          <button 
+            @click="togglePassword"
+            type="button"
+            style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 5px;"
+          >
+            👁️
+          </button>
+        </div>
+      </div>
+      <button @click="login" class="login-button" style="display: inline-block;">Login</button>
+    </div>
+    <div v-else class="container">
       <h1>Kubernetes Cluster Provisioner</h1>
       
       <div class="form-vertical" style="position: relative;">
@@ -133,4 +233,5 @@ const app = {
 };
 
 // Mount Vue app
-Vue.createApp(app).mount('#app');
+const { createApp } = Vue;
+createApp(app).mount('#app');

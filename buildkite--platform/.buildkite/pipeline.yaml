@@ -1,0 +1,153 @@
+steps:
+  - label: "🔧 Generate Terraform Config"
+    command: |
+      # Create terraform directory if it doesn't exist
+      mkdir -p terraform
+      
+      # Generate main.tf with variables from build
+      cat << EOF > terraform/main.tf
+      provider "aws" {
+        region = "\${AWS_REGION}"
+      }
+
+      module "eks" {
+        source  = "terraform-aws-modules/eks/aws"
+        version = "~> 19.0"
+
+        cluster_name    = "\${EKS_CLUSTER_NAME}"
+        cluster_version = "1.27"
+
+        vpc_id     = module.vpc.vpc_id
+        subnet_ids = module.vpc.private_subnets
+
+        eks_managed_node_group_defaults = {
+          instance_types = ["\${EKS_NODE_INSTANCE_TYPE}"]
+        }
+
+        eks_managed_node_groups = {
+          default = {
+            name = "\${EKS_NODE_GROUP_NAME}"
+
+            min_size     = \${EKS_NODE_MIN_SIZE}
+            max_size     = \${EKS_NODE_MAX_SIZE}
+            desired_size = \${EKS_NODE_DESIRED_SIZE}
+          }
+        }
+      }
+
+      module "vpc" {
+        source = "terraform-aws-modules/vpc/aws"
+
+        name = "\${EKS_CLUSTER_NAME}-vpc"
+        cidr = "10.0.0.0/16"
+
+        azs             = ["\${AWS_REGION}a", "\${AWS_REGION}b", "\${AWS_REGION}c"]
+        private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+        public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+        enable_nat_gateway = true
+        single_nat_gateway = true
+      }
+
+      # Output values needed for the UI
+      output "cluster_details" {
+        value = {
+          cluster_name = module.eks.cluster_name
+          region      = "\${AWS_REGION}"
+          console_url = "https://\${AWS_REGION}.console.aws.amazon.com/eks/home?region=\${AWS_REGION}#/clusters/\${EKS_CLUSTER_NAME}"
+        }
+      }
+      EOF
+
+  - wait
+
+  - label: "🌍 Initialize Terraform"
+    command: |
+      cd terraform
+      terraform init
+
+  - wait
+
+  - label: "📋 Terraform Plan"
+    command: |
+      cd terraform
+      terraform plan -out=tfplan
+
+  - wait
+
+  - label: "🚀 Apply Terraform"
+    command: |
+      cd terraform
+      terraform apply -auto-approve tfplan
+      
+      # Extract and save outputs for the UI
+      echo "--- Extracting cluster details"
+      CLUSTER_DETAILS=$(terraform output -json cluster_details)
+      echo "$CLUSTER_DETAILS" > cluster_details.json
+      
+      # Upload artifact for the UI to consume
+      buildkite-agent artifact upload cluster_details.json
+
+  - wait
+
+  - label: "⚙️ Configure kubectl"
+    command: |
+      aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME} --region ${AWS_REGION}
+
+  - wait
+
+  - label: "🔧 Install Nginx Ingress"
+    command: |
+      if [[ "${NGINX_TYPE}" == "community" ]]; then
+        helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+        helm install nginx-ingress ingress-nginx/ingress-nginx
+      elif [[ "${NGINX_TYPE}" == "f5" ]]; then
+        helm install nginx-ingress oci://ghcr.io/nginxinc/charts/nginx-ingress
+      fi
+
+  - wait
+
+  - label: "🔒 Install Cert Manager"
+    if: build.env.INSTALL_CERT_MANAGER == "true"
+    command: |
+      helm repo add jetstack https://charts.jetstack.io
+      helm repo update
+      helm install cert-manager jetstack/cert-manager \
+        --namespace cert-manager \
+        --create-namespace \
+        --version v1.14.5 \
+        --set installCRDs=true
+
+  - wait
+
+  - label: "📦 Deploy Application"
+    command: |
+      # Clone the provided GitHub repo
+      git clone ${GITHUB_REPO} app
+      cd app
+      
+      # Apply any kubernetes manifests found
+      if [ -d "kubernetes" ]; then
+        kubectl apply -f kubernetes/
+      elif [ -d "k8s" ]; then
+        kubectl apply -f k8s/
+      else
+        kubectl apply -f .
+      fi
+
+  - wait
+
+  - label: "📤 Update UI Status"
+    command: |
+      # Download the cluster details artifact
+      buildkite-agent artifact download cluster_details.json .
+      
+      # Send cluster details back to the UI endpoint
+      curl -X POST ${BUILDKITE_UI_CALLBACK_URL} \
+        -H "Content-Type: application/json" \
+        -d @cluster_details.json
+
+env:
+  NGINX_TYPE: ${NGINX_TYPE}
+  INSTALL_CERT_MANAGER: ${INSTALL_CERT_MANAGER}
+
