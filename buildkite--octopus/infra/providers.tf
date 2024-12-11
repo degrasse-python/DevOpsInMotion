@@ -6,6 +6,10 @@ terraform {
       source = "hashicorp/aws"
       version = "~>4.25"
     }
+    google = {
+      source = "hashicorp/google"
+      version = "~>5.4.0"
+    }
   }
 }
 
@@ -13,4 +17,11 @@ terraform {
 provider "aws" {
   region = "us-east-2"
   profile = "default"
+}
+
+provider "google" {
+  credentials = var.GOOGLE_CREDENTIALS
+  project    = "Energy Stars"
+  region     = "us-central1"
+  zone    = "us-central1-c"
 }

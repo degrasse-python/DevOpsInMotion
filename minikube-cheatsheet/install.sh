@@ -1,15 +1,17 @@
 # quick install for octopus on minikube
 minikube start --cpus 4 --memory 8192 --disk-size 20g
+minikube addons enable ingress
+minikube addons enable metrics-server
 
 kubectl create namespace octopus
 kubectl create namespace ingress-nginx
 kubectl create namespace postgresql-prod
 # kubectl create namespace ingress
 helm repo add jetstack https://charts.jetstack.io --force-update
+helm pull oci://registry-1.docker.io/octopusdeploy/octopusdeploy-helm
 helm repo update
 
 minikube tunnel &
-
 
 helm upgrade -i \
   cert-manager jetstack/cert-manager \
@@ -32,7 +34,6 @@ kubectl get svc -n ingress-nginx
 # minikube addons enable ingress 
 # kubectl apply -f nginx-values.yaml -n ingress-nginx
 kubectl get ingress -n ingress-nginx
-minikube tunnel
 
 
 openssl rand -base64 16 > octopus-master-key

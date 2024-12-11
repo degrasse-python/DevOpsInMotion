@@ -175,13 +175,29 @@ resource "aws_instance" "buildkite_instance" {
   provisioner "local-exec" {
     # √buildkite--octopus/infra/ansible/roles/buildkite/tasks/install.yaml
     working_dir = path.cwd
-    # working dir is buildkite--octopus/infra/
-    command = "sudo ansible-playbook -i ${aws_instance.buildkite_instance.public_ip} --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ansible/playbook.yaml"
+    
+    command = 
+    # "sudo ansible-playbook -i ${aws_instance.buildkite_instance.public_ip} --private-key ${tls_private_key.buildkite_ssh_key.private_key_pem} ansible/playbook.yaml"
   }
 
 }
 
 /*
+
+/sql server express on aws rds
+
+resource "aws_db_instance" "octopus_db" {
+  identifier           = "octopus-db"
+  allocated_storage    = 40
+  storage_type         = "gp2"
+  engine               = "mssql"  # change to mssql for SQL Server 
+  engine_version       = "11.4"
+  instance_class       = "db.t2.micro"
+  username             = "user"
+  password             = "mypassword"
+  parameter_group_name = "default.postgres11"
+  publicly_accessible  = true
+}
 
 postgresql on aws rds
 
