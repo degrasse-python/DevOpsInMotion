@@ -52,6 +52,11 @@ const app = {
       }
     },
 
+    async logout() {
+      this.isLoggedIn = false;
+      localStorage.removeItem('credentials');
+    },
+
     async submitJob() {
       try {
         this.loading = true;
@@ -63,7 +68,16 @@ const app = {
         const response = await axios.post('/api/trigger-build', {
           repo: this.githubRepo,
           nginxType: this.selectedNginx,
-          certManager: this.installCertManager
+          certManager: this.installCertManager,
+          awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          awsRegion: process.env.AWS_REGION,
+          eksClusterName: `${this.username}-platform-${Math.random().toString(36).substr(2, 10)}`,
+          eksNodeGroupName: process.env.EKS_NODE_GROUP_NAME,
+          eksNodeInstanceType: process.env.EKS_NODE_INSTANCE_TYPE,
+          eksNodeMinSize: process.env.EKS_NODE_MIN_SIZE,
+          eksNodeMaxSize: process.env.EKS_NODE_MAX_SIZE,
+          eksNodeDesiredSize: process.env.EKS_NODE_DESIRED_SIZE
         }, {
           headers: {
             'Authorization': `Basic ${credentials}`
@@ -150,6 +164,7 @@ const app = {
       <button @click="login" class="login-button" style="display: inline-block;">Login</button>
     </div>
     <div v-else class="container">
+      <button @click="logout" class="logout-button" style="position: absolute; top: 0; right: 0; margin: 1rem;">Logout</button>
       <h1>Kubernetes Cluster Provisioner</h1>
       
       <div class="form-vertical" style="position: relative;">
