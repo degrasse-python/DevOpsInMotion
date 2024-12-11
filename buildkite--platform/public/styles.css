@@ -27,12 +27,12 @@ h1 {
     display: flex;
     gap: 1.5rem;
     margin-bottom: 2.5rem;
-    padding: 0 1rem;
+    padding: 1 1rem;
 }
 
 input {
     flex: 1;
-    padding: 0.5rem;
+    padding: 0.25rem;
     margin-top: 0.5rem;
     border: 2px solid #E6E6E6;
     border-radius: 6px;
@@ -78,4 +78,7 @@ button:disabled {
     border-radius: 6px;
     border-left: 4px solid #FDB927; /* Warriors Gold */
     color: #1D428A; /* Warriors Navy */
+}
+select {
+    margin: 0.65rem; /* Modified to have margin of 3rem */
 }

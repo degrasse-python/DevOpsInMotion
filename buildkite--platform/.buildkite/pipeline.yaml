@@ -17,8 +17,8 @@ steps:
         cluster_name    = "\${EKS_CLUSTER_NAME}"
         cluster_version = "1.27"
 
-        vpc_id     = module.vpc.vpc_id
-        subnet_ids = module.vpc.private_subnets
+        vpc_id     = "vpc-"
+        subnet_ids = ["subnet-"]
 
         eks_managed_node_group_defaults = {
           instance_types = ["\${EKS_NODE_INSTANCE_TYPE}"]
@@ -33,20 +33,6 @@ steps:
             desired_size = \${EKS_NODE_DESIRED_SIZE}
           }
         }
-      }
-
-      module "vpc" {
-        source = "terraform-aws-modules/vpc/aws"
-
-        name = "\${EKS_CLUSTER_NAME}-vpc"
-        cidr = "10.0.0.0/16"
-
-        azs             = ["\${AWS_REGION}a", "\${AWS_REGION}b", "\${AWS_REGION}c"]
-        private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-        public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-
-        enable_nat_gateway = true
-        single_nat_gateway = true
       }
 
       # Output values needed for the UI
@@ -126,14 +112,8 @@ steps:
       git clone ${GITHUB_REPO} app
       cd app
       
-      # Apply any kubernetes manifests found
-      if [ -d "kubernetes" ]; then
-        kubectl apply -f kubernetes/
-      elif [ -d "k8s" ]; then
-        kubectl apply -f k8s/
-      else
-        kubectl apply -f .
-      fi
+      # Install the helm chart
+      helm install my-app ./helm-chart
 
   - wait
 
@@ -150,4 +130,3 @@ steps:
 env:
   NGINX_TYPE: ${NGINX_TYPE}
   INSTALL_CERT_MANAGER: ${INSTALL_CERT_MANAGER}
-
