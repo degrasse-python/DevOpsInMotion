@@ -5,9 +5,7 @@
 scratch/uninstall.sh
 private/
 buildkite--platform/.env
-buildkite--platform/.env
-buildkite--platform/.env
-
+buildkite--platform/public/.env
 .DS_Store
 /scratch/octopus-master-key
 /scratch

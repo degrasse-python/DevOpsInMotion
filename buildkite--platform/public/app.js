@@ -65,22 +65,25 @@ const app = {
         const credentials = localStorage.getItem('credentials');
         
         // Load environment variables from .env file
-        const env = require('dotenv').config().parsed;
+        // Since we're using a bundler like Webpack, we can import dotenv directly
+        const dotenv = await import('./dotenv');
+        dotenv.config();
+        const env = process.env;
         
         // Send job to Buildkite with additional options
         const response = await axios.post('/api/trigger-build', {
           repo: this.githubRepo,
           nginxType: this.selectedNginx,
           certManager: this.installCertManager,
-          awsAccessKeyId: process.env.NODE_ENV === 'development' ? env.AWS_ACCESS_KEY_ID : process.env.AWS_ACCESS_KEY_ID,
-          awsSecretAccessKey: process.env.NODE_ENV === 'development' ? env.AWS_SECRET_ACCESS_KEY : process.env.AWS_SECRET_ACCESS_KEY,
-          awsRegion: process.env.NODE_ENV === 'development' ? env.AWS_REGION : process.env.AWS_REGION,
+          awsAccessKeyId: env.AWS_ACCESS_KEY_ID,
+          awsSecretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+          awsRegion: env.AWS_REGION,
           eksClusterName: `${this.username}-platform-${Math.random().toString(36).substr(2, 10)}`,
-          eksNodeGroupName: process.env.NODE_ENV === 'development' ? env.EKS_NODE_GROUP_NAME : process.env.EKS_NODE_GROUP_NAME,
-          eksNodeInstanceType: process.env.NODE_ENV === 'development' ? env.EKS_NODE_INSTANCE_TYPE : process.env.EKS_NODE_INSTANCE_TYPE,
-          eksNodeMinSize: process.env.NODE_ENV === 'development' ? env.EKS_NODE_MIN_SIZE : process.env.EKS_NODE_MIN_SIZE,
-          eksNodeMaxSize: process.env.NODE_ENV === 'development' ? env.EKS_NODE_MAX_SIZE : process.env.EKS_NODE_MAX_SIZE,
-          eksNodeDesiredSize: process.env.NODE_ENV === 'development' ? env.EKS_NODE_DESIRED_SIZE : process.env.EKS_NODE_DESIRED_SIZE
+          eksNodeGroupName: env.EKS_NODE_GROUP_NAME,
+          eksNodeInstanceType: env.EKS_NODE_INSTANCE_TYPE,
+          eksNodeMinSize: env.EKS_NODE_MIN_SIZE,
+          eksNodeMaxSize: env.EKS_NODE_MAX_SIZE,
+          eksNodeDesiredSize: env.EKS_NODE_DESIRED_SIZE
         }, {
           headers: {
             'Authorization': `Basic ${credentials}`
