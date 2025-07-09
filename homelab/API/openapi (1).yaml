@@ -1,0 +1,4223 @@
+
+"openapi": "3.0.1"
+"info":
+  "title": "Kubiya API"
+  "contact": {}
+  "version": "0.0.6"
+"servers":
+  -
+    "url": "/"
+"paths":
+  "/":
+    "get":
+      "tags":
+        - "Health"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "healthy":
+                    "type": "boolean"
+                  "status":
+                    "type": "string"
+  "/action_stores/{store}/secrets":
+    "get":
+      "tags":
+        - "ActionStores"
+      "parameters":
+        -
+          "name": "store"
+          "in": "path"
+          "description": "store"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "name":
+                    "type": "string"
+                  "runner":
+                    "type": "string"
+                  "secrets":
+                    "type": "array"
+                    "items":
+                      "type": "object"
+                      "properties":
+                        "description":
+                          "type": "string"
+                        "name":
+                          "type": "string"
+                        "required":
+                          "type": "boolean"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/action_stores/secrets":
+    "get":
+      "tags":
+        - "ActionStores"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "name":
+                      "type": "string"
+                    "runner":
+                      "type": "string"
+                    "secrets":
+                      "type": "array"
+                      "items":
+                        "type": "object"
+                        "properties":
+                          "description":
+                            "type": "string"
+                          "name":
+                            "type": "string"
+                          "required":
+                            "type": "boolean"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/api/v1/runners/{name}":
+    "post":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "runner"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/api/v1/upgrade/runners/{name}":
+    "post":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "runner"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/api/v2/runners/{runner}":
+    "post":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/runners/helmchart/{runner}":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/scheduled_tasks":
+    "get":
+      "tags":
+        - "Scheduled Tasks"
+      "summary": "Get all scheduled tasks"
+      "description": "Get all scheduled tasks"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties": true
+    "put":
+      "tags":
+        - "Scheduled Tasks"
+      "summary": "Update a scheduled task"
+      "description": "Update a scheduled task"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+    "post":
+      "tags":
+        - "Scheduled Tasks"
+      "summary": "Create a scheduled task"
+      "description": "Create a scheduled task"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+  "/scheduled_tasks/:id":
+    "get":
+      "tags":
+        - "Scheduled Tasks"
+      "summary": "Get scheduled task by id"
+      "description": "Get all scheduled tasks"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties": true
+    "delete":
+      "tags":
+        - "Scheduled Tasks"
+      "summary": "Delete a scheduled task"
+      "description": "Delete a scheduled task"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+  "/sources":
+    "get":
+      "tags":
+        - "sources"
+      "summary": "Get all sources"
+      "description": "Get all sources"
+      "responses":
+        "200":
+          "description": "A list of sources"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/sources/:id":
+    "get":
+      "tags":
+        - "sources"
+      "summary": "Get source by id"
+      "description": "Get source by id"
+      "responses":
+        "200":
+          "description": "A source"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "put":
+      "tags":
+        - "sources"
+      "summary": "Sync source"
+      "description": "Sync source"
+      "parameters":
+        -
+          "name": "source"
+          "in": "path"
+          "description": "Source id"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Source metadata"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/sources/agent_sources/{id}":
+    "get":
+      "tags":
+        - "sources"
+      "summary": "Get agent sources"
+      "description": "Get agent sources"
+      "parameters":
+        -
+          "name": "source"
+          "in": "path"
+          "description": "Source name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Source metadata"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/sources/load/{source}":
+    "get":
+      "tags":
+        - "sources"
+      "summary": "Load source"
+      "description": "Load source"
+      "parameters":
+        -
+          "name": "source"
+          "in": "path"
+          "description": "Source name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Source metadata"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/sources/{source}":
+    "post":
+      "tags":
+        - "sources"
+      "summary": "Create source"
+      "description": "Create source"
+      "parameters":
+        -
+          "name": "source"
+          "in": "path"
+          "description": "Source name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Source metadata"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "delete":
+      "tags":
+        - "sources"
+      "summary": "Delete source"
+      "description": "Delete source"
+      "parameters":
+        -
+          "name": "source"
+          "in": "path"
+          "description": "Source name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Source metadata"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/sources/{source}/metadata":
+    "get":
+      "tags":
+        - "sources"
+      "summary": "Get source metadata"
+      "description": "Get source metadata"
+      "parameters":
+        -
+          "name": "source"
+          "in": "path"
+          "description": "Source name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "Source metadata"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "401":
+          "description": "Unauthenticated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "403":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal server error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/action/:action_store/:action_name/:runner":
+    "post":
+      "tags":
+        - "ActionStores"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "action_store"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "action_name"
+          "in": "path"
+          "description": "action name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/action_store/:store_name":
+    "get":
+      "tags":
+        - "ActionStores"
+      "parameters":
+        -
+          "name": "store_name"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/action_stores":
+    "get":
+      "tags":
+        - "ActionStores"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/actions_history":
+    "get":
+      "tags":
+        - "ActionsHistory"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/agents/:agent_uuid/activate_integrations":
+    "get":
+      "tags":
+        - "Integrations"
+      "parameters":
+        -
+          "name": "uuid"
+          "in": "path"
+          "description": "Agent UUID"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "An activation payload for of all the agent's integrations"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/agents/:agent_uuid/integrations":
+    "get":
+      "tags":
+        - "Integrations"
+      "parameters":
+        -
+          "name": "uuid"
+          "in": "path"
+          "description": "Agent UUID"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "A list of integrations"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/chat_history/:tid":
+    "get":
+      "tags":
+        - "ChatHistory"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/connections":
+    "post":
+      "tags":
+        - "Connections"
+      "requestBody":
+        "description": "ConnectionRequest payload"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "envs":
+                  "type": "array"
+                  "items":
+                    "type": "object"
+                    "properties":
+                      "base_64":
+                        "type": "boolean"
+                      "name":
+                        "type": "string"
+                      "value":
+                        "type": "string"
+                "image":
+                  "type": "string"
+                "name":
+                  "type": "string"
+                "runner":
+                  "type": "string"
+                "secrets":
+                  "type": "array"
+                  "items":
+                    "type": "object"
+                    "properties":
+                      "base_64":
+                        "type": "boolean"
+                      "description":
+                        "type": "string"
+                      "name":
+                        "type": "string"
+                      "trace_id":
+                        "type": "string"
+                      "value":
+                        "type": "string"
+        "required": true
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+      "x-codegen-request-body-name": "secret"
+  "/v1/deployment/runners/:token":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "token"
+          "in": "path"
+          "description": "token"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/featureflags":
+    "post":
+      "tags":
+        - "Organization"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "organization":
+                    "type": "string"
+  "/v1/integrations":
+    "get":
+      "tags":
+        - "Integration"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/integrations/:vendor":
+    "get":
+      "tags":
+        - "Integration"
+      "parameters":
+        -
+          "name": "vendor"
+          "in": "path"
+          "description": "vendor name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "delete":
+      "tags":
+        - "Integration"
+      "parameters":
+        -
+          "name": "vendor"
+          "in": "path"
+          "description": "vendor name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/integrations/:vendor/status":
+    "post":
+      "tags":
+        - "Integration"
+      "parameters":
+        -
+          "name": "vendor"
+          "in": "path"
+          "description": "vendor name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/keys":
+    "get":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties": true
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+    "post":
+      "tags":
+        - "Users"
+      "requestBody":
+        "description": "the ttl for the token, for example: 15d, 2h, 1h30m, etc."
+        "content":
+          "application/json":
+            "schema":
+              "type": "string"
+        "required": false
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+      "x-codegen-request-body-name": "ttl"
+  "/v1/keys/:token_id":
+    "delete":
+      "tags":
+        - "Users"
+      "parameters":
+        -
+          "name": "token_id"
+          "in": "path"
+          "description": "the token's id"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "204":
+          "description": "No Content"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/manage/groups":
+    "get":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "create_at":
+                    "type": "string"
+                  "description":
+                    "type": "string"
+                  "name":
+                    "type": "string"
+                  "roles":
+                    "type": "array"
+                    "items":
+                      "type": "string"
+                  "system":
+                    "type": "boolean"
+                  "uuid":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+    "put":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "create_at":
+                    "type": "string"
+                  "description":
+                    "type": "string"
+                  "name":
+                    "type": "string"
+                  "roles":
+                    "type": "array"
+                    "items":
+                      "type": "string"
+                  "system":
+                    "type": "boolean"
+                  "uuid":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+    "post":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "create_at":
+                      "type": "string"
+                    "description":
+                      "type": "string"
+                    "name":
+                      "type": "string"
+                    "roles":
+                      "type": "array"
+                      "items":
+                        "type": "string"
+                    "system":
+                      "type": "boolean"
+                    "uuid":
+                      "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/manage/groups/{id}":
+    "get":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "create_at":
+                    "type": "string"
+                  "description":
+                    "type": "string"
+                  "name":
+                    "type": "string"
+                  "roles":
+                    "type": "array"
+                    "items":
+                      "type": "string"
+                  "system":
+                    "type": "boolean"
+                  "uuid":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+    "delete":
+      "tags":
+        - "Users"
+      "responses":
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/org":
+    "get":
+      "tags":
+        - "Organization"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "organization":
+                    "type": "string"
+  "/v1/org/register/slack":
+    "post":
+      "tags":
+        - "Onboarding"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/org/register/teams":
+    "post":
+      "tags":
+        - "Onboarding"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/org_limitations":
+    "get":
+      "tags":
+        - "Organization"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "organization":
+                    "type": "string"
+  "/v1/related_runners/:store/:action":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "store"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "action"
+          "in": "path"
+          "description": "action name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners":
+    "get":
+      "tags":
+        - "Runners"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner":
+    "delete":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner/action-stores":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner/action-stores/:store":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner/action-stores/:store/actions":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "store"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner/action-stores/:store/actions/:action":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "store"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "action"
+          "in": "path"
+          "description": "action name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner/action-stores/:store/secrets":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "store"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner/action-stores/:storeName":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "storeName"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "delete":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "storeName"
+          "in": "path"
+          "description": "storeName name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/runners/:runner/connection/:connection":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "connection"
+          "in": "path"
+          "description": "connection name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/v1/runners/:runner/health":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "error":
+                    "type": "string"
+                  "health":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/runners_metadata":
+    "get":
+      "tags":
+        - "Runners"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/secret/:secret_name":
+    "delete":
+      "tags":
+        - "Secrets"
+      "description": "get store by name"
+      "parameters":
+        -
+          "name": "secret_name"
+          "in": "path"
+          "description": "secret name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/secret/create_secret":
+    "put":
+      "tags":
+        - "Secrets"
+      "description": "get store by name"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/secret/get_secret_value/:name":
+    "get":
+      "tags":
+        - "Secrets"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "secret name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/secret/update_secret":
+    "put":
+      "tags":
+        - "Secrets"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/secrets":
+    "get":
+      "tags":
+        - "Secrets"
+      "description": "get store by name"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "put":
+      "tags":
+        - "Secrets"
+      "description": "get store by name"
+      "requestBody":
+        "description": "SecretRequest payload"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "secrets":
+                  "type": "array"
+                  "items":
+                    "type": "object"
+                    "properties":
+                      "base_64":
+                        "type": "boolean"
+                      "description":
+                        "type": "string"
+                      "name":
+                        "type": "string"
+                      "trace_id":
+                        "type": "string"
+                      "value":
+                        "type": "string"
+        "required": true
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "error":
+                      "type": "string"
+                    "result":
+                      "type": "object"
+                    "status":
+                      "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+      "x-codegen-request-body-name": "secret"
+    "post":
+      "tags":
+        - "Secrets"
+      "description": "get store by name"
+      "requestBody":
+        "description": "SecretRequest payload"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "secrets":
+                  "type": "array"
+                  "items":
+                    "type": "object"
+                    "properties":
+                      "base_64":
+                        "type": "boolean"
+                      "description":
+                        "type": "string"
+                      "name":
+                        "type": "string"
+                      "trace_id":
+                        "type": "string"
+                      "value":
+                        "type": "string"
+        "required": true
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "error":
+                      "type": "string"
+                    "result":
+                      "type": "object"
+                    "status":
+                      "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+      "x-codegen-request-body-name": "secret"
+  "/v1/system_integration/:integration_name":
+    "put":
+      "tags":
+        - "System Integrations"
+      "parameters":
+        -
+          "name": "integration_name"
+          "in": "path"
+          "description": "integration_name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "delete":
+      "tags":
+        - "System Integrations"
+      "parameters":
+        -
+          "name": "integration_name"
+          "in": "path"
+          "description": "integration_name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/system_integrations":
+    "get":
+      "tags":
+        - "System Integrations"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v1/user/groups":
+    "post":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "create_at":
+                    "type": "string"
+                  "email":
+                    "type": "string"
+                  "groups":
+                    "type": "array"
+                    "items":
+                      "type": "string"
+                  "image":
+                    "type": "string"
+                  "invite_link":
+                    "type": "string"
+                  "name":
+                    "type": "string"
+                  "roles":
+                    "type": "array"
+                    "items":
+                      "type": "object"
+                      "properties":
+                        "create_at":
+                          "type": "string"
+                        "description":
+                          "type": "string"
+                        "name":
+                          "type": "string"
+                        "uuid":
+                          "type": "string"
+                  "status":
+                    "type": "boolean"
+                  "user_status":
+                    "type": "string"
+                  "uuid":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/users":
+    "get":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "create_at":
+                      "type": "string"
+                    "email":
+                      "type": "string"
+                    "groups":
+                      "type": "array"
+                      "items":
+                        "type": "string"
+                    "image":
+                      "type": "string"
+                    "invite_link":
+                      "type": "string"
+                    "name":
+                      "type": "string"
+                    "roles":
+                      "type": "array"
+                      "items":
+                        "type": "object"
+                        "properties":
+                          "create_at":
+                            "type": "string"
+                          "description":
+                            "type": "string"
+                          "name":
+                            "type": "string"
+                          "uuid":
+                            "type": "string"
+                    "status":
+                      "type": "boolean"
+                    "user_status":
+                      "type": "string"
+                    "uuid":
+                      "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/users/:email":
+    "get":
+      "tags":
+        - "Users"
+      "parameters":
+        -
+          "name": "email"
+          "in": "path"
+          "description": "user email to get"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content": {}
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+    "delete":
+      "tags":
+        - "Users"
+      "parameters":
+        -
+          "name": "email"
+          "in": "path"
+          "description": "user email to delete"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content": {}
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/users/groups/:id":
+    "post":
+      "tags":
+        - "Users"
+      "parameters":
+        -
+          "name": "id"
+          "in": "path"
+          "description": "group id"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "create_at":
+                    "type": "string"
+                  "email":
+                    "type": "string"
+                  "groups":
+                    "type": "array"
+                    "items":
+                      "type": "string"
+                  "image":
+                    "type": "string"
+                  "invite_link":
+                    "type": "string"
+                  "name":
+                    "type": "string"
+                  "roles":
+                    "type": "array"
+                    "items":
+                      "type": "object"
+                      "properties":
+                        "create_at":
+                          "type": "string"
+                        "description":
+                          "type": "string"
+                        "name":
+                          "type": "string"
+                        "uuid":
+                          "type": "string"
+                  "status":
+                    "type": "boolean"
+                  "user_status":
+                    "type": "string"
+                  "uuid":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/users/invite":
+    "post":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "create_at":
+                    "type": "string"
+                  "email":
+                    "type": "string"
+                  "groups":
+                    "type": "array"
+                    "items":
+                      "type": "string"
+                  "image":
+                    "type": "string"
+                  "invite_link":
+                    "type": "string"
+                  "name":
+                    "type": "string"
+                  "roles":
+                    "type": "array"
+                    "items":
+                      "type": "object"
+                      "properties":
+                        "create_at":
+                          "type": "string"
+                        "description":
+                          "type": "string"
+                        "name":
+                          "type": "string"
+                        "uuid":
+                          "type": "string"
+                  "status":
+                    "type": "boolean"
+                  "user_status":
+                    "type": "string"
+                  "uuid":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v1/users/self":
+    "get":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "create_at":
+                    "type": "string"
+                  "email":
+                    "type": "string"
+                  "groups":
+                    "type": "array"
+                    "items":
+                      "type": "string"
+                  "image":
+                    "type": "string"
+                  "invite_link":
+                    "type": "string"
+                  "name":
+                    "type": "string"
+                  "roles":
+                    "type": "array"
+                    "items":
+                      "type": "object"
+                      "properties":
+                        "create_at":
+                          "type": "string"
+                        "description":
+                          "type": "string"
+                        "name":
+                          "type": "string"
+                        "uuid":
+                          "type": "string"
+                  "status":
+                    "type": "boolean"
+                  "user_status":
+                    "type": "string"
+                  "uuid":
+                    "type": "string"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v2/action/:action_store/:action_name/:runner/:action_store_type/:category":
+    "post":
+      "tags":
+        - "ActionStores"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "action_store"
+          "in": "path"
+          "description": "store name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "action_name"
+          "in": "path"
+          "description": "action name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "action_store_type"
+          "in": "path"
+          "description": "action store type name"
+          "required": true
+          "schema":
+            "type": "string"
+        -
+          "name": "category"
+          "in": "path"
+          "description": "category name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v2/integrations":
+    "get":
+      "tags":
+        - "Integrations"
+      "responses":
+        "200":
+          "description": "A list of integrations"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "post":
+      "tags":
+        - "Integrations"
+      "requestBody":
+        "description": "Integration to be created"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "additionalProperties":
+                "type": "string"
+        "required": true
+      "responses":
+        "200":
+          "description": "Integration successfully created"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+      "x-codegen-request-body-name": "integration"
+  "/v2/integrations/:name":
+    "get":
+      "tags":
+        - "Integrations"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "Integration Name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "A single integration"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "put":
+      "tags":
+        - "Integrations"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "Integration Name"
+          "required": true
+          "schema":
+            "type": "string"
+      "requestBody":
+        "description": "Updated integration data"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "additionalProperties":
+                "type": "string"
+        "required": true
+      "responses":
+        "200":
+          "description": "Integration successfully updated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+      "x-codegen-request-body-name": "integration"
+    "delete":
+      "tags":
+        - "Integrations"
+      "parameters":
+        -
+          "name": "name"
+          "in": "path"
+          "description": "Integration Name"
+          "required": true
+          "schema":
+            "type": "integer"
+      "responses":
+        "200":
+          "description": "Integration successfully deleted"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "404":
+          "description": "Integration not found"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v2/integrations/activate":
+    "post":
+      "tags":
+        - "Integrations"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v2/integrations/validate":
+    "post":
+      "tags":
+        - "Integrations"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v2/runners/:runner/health":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/v2/secrets":
+    "get":
+      "tags":
+        - "Secrets"
+      "responses":
+        "200":
+          "description": "A list of Secrets"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "additionalProperties":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "post":
+      "tags":
+        - "Secrets"
+      "requestBody":
+        "description": "Secrets to be created"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "additionalProperties":
+                "type": "string"
+        "required": true
+      "responses":
+        "200":
+          "description": "Secret successfully created"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+      "x-codegen-request-body-name": "secret"
+  "/v2/secrets/:uuid":
+    "get":
+      "tags":
+        - "Secrets"
+      "parameters":
+        -
+          "name": "uuid"
+          "in": "path"
+          "description": "Secret UUID"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "A single secret"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "404":
+          "description": "Not Found - returns an empty json object"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+    "put":
+      "tags":
+        - "Secrets"
+      "parameters":
+        -
+          "name": "uuid"
+          "in": "path"
+          "description": "Secret UUID"
+          "required": true
+          "schema":
+            "type": "string"
+      "requestBody":
+        "description": "Patched secret data"
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "additionalProperties":
+                "type": "string"
+        "required": true
+      "responses":
+        "200":
+          "description": "Secret successfully updated"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+      "x-codegen-request-body-name": "secret"
+    "delete":
+      "tags":
+        - "Secrets"
+      "parameters":
+        -
+          "name": "uuid"
+          "in": "path"
+          "description": "Secret UUID"
+          "required": true
+          "schema":
+            "type": "integer"
+      "responses":
+        "200":
+          "description": "Secret successfully deleted"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "404":
+          "description": "Secret not found"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Secret Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v2/secrets/get_value/:uuid":
+    "get":
+      "tags":
+        - "Secrets"
+      "parameters":
+        -
+          "name": "uuid"
+          "in": "path"
+          "description": "Secret UUID"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "A secret value"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "404":
+          "description": "Not Found - returns an empty json object"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties":
+                  "type": "string"
+  "/v2/users":
+    "get":
+      "tags":
+        - "Users"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "additionalProperties": true
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+        "500":
+          "description": "Internal Server Error"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+  "/v3/runners":
+    "get":
+      "tags":
+        - "Runners"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/v3/runners/{runner}":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+    "post":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+    "delete":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/v3/runners{runner}/health":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/v3/runners/:runner/ops":
+    "post":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/v3/runners/describe/{runner}":
+    "get":
+      "tags":
+        - "Runners"
+      "parameters":
+        -
+          "name": "runner"
+          "in": "path"
+          "description": "runner name"
+          "required": true
+          "schema":
+            "type": "string"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "400":
+          "description": "Bad Request"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+        "401":
+          "description": "Unauthorized"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "integer"
+                  "error":
+                    "type": "string"
+                  "result":
+                    "type": "object"
+  "/version":
+    "get":
+      "tags":
+        - "Health"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "string"
+  "/whoami":
+    "get":
+      "tags":
+        - "Health"
+      "responses":
+        "200":
+          "description": "OK"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "email":
+                    "type": "string"
+                  "organization":
+                    "type": "string"
+"components":
+  "schemas":
+    "actions.ErrorResponse":
+      "type": "object"
+      "properties":
+        "code":
+          "type": "integer"
+        "error":
+          "type": "string"
+    "actions.Secret":
+      "type": "object"
+      "properties":
+        "description":
+          "type": "string"
+        "name":
+          "type": "string"
+        "required":
+          "type": "boolean"
+    "actions.StoreSecrets":
+      "type": "object"
+      "properties":
+        "name":
+          "type": "string"
+        "runner":
+          "type": "string"
+        "secrets":
+          "type": "array"
+          "items":
+            "type": "object"
+            "properties":
+              "description":
+                "type": "string"
+              "name":
+                "type": "string"
+              "required":
+                "type": "boolean"
+    "connections.ConnectionRequest":
+      "type": "object"
+      "properties":
+        "envs":
+          "type": "array"
+          "items":
+            "type": "object"
+            "properties":
+              "base_64":
+                "type": "boolean"
+              "name":
+                "type": "string"
+              "value":
+                "type": "string"
+        "image":
+          "type": "string"
+        "name":
+          "type": "string"
+        "runner":
+          "type": "string"
+        "secrets":
+          "type": "array"
+          "items":
+            "type": "object"
+            "properties":
+              "base_64":
+                "type": "boolean"
+              "description":
+                "type": "string"
+              "name":
+                "type": "string"
+              "trace_id":
+                "type": "string"
+              "value":
+                "type": "string"
+    "health.healthResponse":
+      "type": "object"
+      "properties":
+        "healthy":
+          "type": "boolean"
+        "status":
+          "type": "string"
+    "health.whoamiResponse":
+      "type": "object"
+      "properties":
+        "email":
+          "type": "string"
+        "organization":
+          "type": "string"
+    "manage.Group":
+      "type": "object"
+      "properties":
+        "create_at":
+          "type": "string"
+        "description":
+          "type": "string"
+        "name":
+          "type": "string"
+        "roles":
+          "type": "array"
+          "items":
+            "type": "string"
+        "system":
+          "type": "boolean"
+        "uuid":
+          "type": "string"
+    "manage.Role":
+      "type": "object"
+      "properties":
+        "create_at":
+          "type": "string"
+        "description":
+          "type": "string"
+        "name":
+          "type": "string"
+        "uuid":
+          "type": "string"
+    "org.organizationResponse":
+      "type": "object"
+      "properties":
+        "organization":
+          "type": "string"
+    "results.HttpError":
+      "type": "object"
+      "properties":
+        "code":
+          "type": "integer"
+        "error":
+          "type": "string"
+    "results.Result":
+      "type": "object"
+      "properties":
+        "code":
+          "type": "integer"
+        "error":
+          "type": "string"
+        "result":
+          "type": "object"
+    "runners.HealthCheckResponse":
+      "type": "object"
+      "properties":
+        "error":
+          "type": "string"
+        "health":
+          "type": "string"
+    "users.User":
+      "type": "object"
+      "properties":
+        "create_at":
+          "type": "string"
+        "email":
+          "type": "string"
+        "groups":
+          "type": "array"
+          "items":
+            "type": "string"
+        "image":
+          "type": "string"
+        "invite_link":
+          "type": "string"
+        "name":
+          "type": "string"
+        "roles":
+          "type": "array"
+          "items":
+            "type": "object"
+            "properties":
+              "create_at":
+                "type": "string"
+              "description":
+                "type": "string"
+              "name":
+                "type": "string"
+              "uuid":
+                "type": "string"
+        "status":
+          "type": "boolean"
+        "user_status":
+          "type": "string"
+        "uuid":
+          "type": "string"
+    "workflows.EnvType":
+      "type": "object"
+      "properties":
+        "base_64":
+          "type": "boolean"
+        "name":
+          "type": "string"
+        "value":
+          "type": "string"
+    "workflows.SecretRequest":
+      "type": "object"
+      "properties":
+        "secrets":
+          "type": "array"
+          "items":
+            "type": "object"
+            "properties":
+              "base_64":
+                "type": "boolean"
+              "description":
+                "type": "string"
+              "name":
+                "type": "string"
+              "trace_id":
+                "type": "string"
+              "value":
+                "type": "string"
+    "workflows.SecretType":
+      "type": "object"
+      "properties":
+        "base_64":
+          "type": "boolean"
+        "description":
+          "type": "string"
+        "name":
+          "type": "string"
+        "trace_id":
+          "type": "string"
+        "value":
+          "type": "string"
+    "workflows.WorkflowResponse":
+      "type": "object"
+      "properties":
+        "error":
+          "type": "string"
+        "result":
+          "type": "object"
+        "status":
+          "type": "string"
+  "securitySchemes":
+    "JWT":
+      "type": "apiKey"
+      "name": "token"
+      "in": "header"
+"x-original-swagger-version": "2.0"

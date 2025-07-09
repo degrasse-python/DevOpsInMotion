@@ -45,3 +45,4 @@ buildkite--platform/frontend/public/.env
 buildkite--platform/backend/.env
 tnr-token
 homelab/README.md
+homelab/demos/demo_vcluster/github_cicd/kubecon
