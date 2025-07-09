@@ -41,3 +41,6 @@ yarn.lock
 /test/e2e/reports/
 selenium-debug.log
 
+buildkite--platform/frontend/public/.env
+buildkite--platform/backend/.env
+tnr-token
